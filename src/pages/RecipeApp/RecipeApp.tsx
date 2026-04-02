@@ -38,7 +38,8 @@ export default function RecipeApp() {
     return true;
   };
 
-  const enviarReceta = async () => {
+const enviarReceta = async () => {
+  try {
     if (!validarFormulario()) return;
 
     const response = await fetch("https://calculadoraderecetas-backend.onrender.com/ajustar-receta", {
@@ -53,7 +54,12 @@ export default function RecipeApp() {
 
     const data = await response.json();
     setResultado(data.ingredientes);
-  };
+
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error conectando con el servidor");
+  }
+};
 
   return (
     <div style={{ padding: 20, maxWidth: 600 }}>

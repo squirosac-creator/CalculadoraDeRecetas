@@ -6,7 +6,7 @@ import RecipeApp from "../../pages/RecipeApp/RecipeApp";
 
 export default function Navbar() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/CalculadoraDeRecetas">
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>

@@ -50,3 +50,19 @@ export function conversionValida(origen: string, destino: string): boolean {
   if (!origen || !destino) return true;
   return TIPO_UNIDAD[origen] === TIPO_UNIDAD[destino];
 }
+
+export const MEDIDAS_INFO = [
+  { unidad: "g", nombre: "Gramo", tipo: "Masa", equiv: "1 g" },
+  { unidad: "kg", nombre: "Kilogramo", tipo: "Masa", equiv: "1000 g" },
+  { unidad: "mg", nombre: "Miligramo", tipo: "Masa", equiv: "0.001 g" },
+  { unidad: "oz", nombre: "Onza", tipo: "Masa", equiv: "28.35 g" },
+  { unidad: "lb", nombre: "Libra", tipo: "Masa", equiv: "453.6 g" },
+
+  { unidad: "ml", nombre: "Mililitro", tipo: "Volumen", equiv: "1 ml" },
+  { unidad: "l", nombre: "Litro", tipo: "Volumen", equiv: "1000 ml" },
+  { unidad: "tsp", nombre: "Cucharadita", tipo: "Volumen", equiv: "5 ml" },
+  { unidad: "tbsp", nombre: "Cucharada", tipo: "Volumen", equiv: "15 ml" },
+  { unidad: "cup", nombre: "Taza", tipo: "Volumen", equiv: "240 ml" },
+  { unidad: "dash", nombre: "Chorrito", tipo: "Volumen", equiv: "0.6 ml (aprox)" },
+  { unidad: "pinch", nombre: "Pizca", tipo: "Volumen", equiv: "0.3 ml (aprox)" },
+];

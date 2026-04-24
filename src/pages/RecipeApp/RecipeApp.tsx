@@ -6,9 +6,10 @@ import ResultList from "../../components/ResultList/ResultList";
 import { useState } from "react";
 import type { Ingrediente, IngredienteResultado } from "../../types";
 import { Box, Stack } from "@mui/material";
-import "./RecipeApp.css";
+// import "./RecipeApp.css";
 import Navbar from "../../components/NavigationBar/NavigationBar";
 import Footer from "../../components/Footer/Footer";
+import { useEffect } from "react";
 
 export default function RecipeApp() {
   const [invitadosOriginales, setInvitadosOriginales] = useState(4);
@@ -25,6 +26,14 @@ export default function RecipeApp() {
       { nombre: "", cantidad: 0, unidadEntrada: "g", unidadSalida: "g" },
     ]);
   };
+
+  useEffect(() => {
+    document.body.style.backgroundColor = "#0a0a0a";
+
+    return () => {
+      document.body.style.backgroundColor = "";
+    };
+  }, []);
 
   const actualizarIngrediente = (
     index: number,
@@ -79,7 +88,12 @@ export default function RecipeApp() {
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        backgroundColor: "#0a0a0a",
+      }}
+    >
       <Navbar />
 
       <Box
@@ -108,6 +122,6 @@ export default function RecipeApp() {
         </Stack>
       </Box>
       <Footer />
-    </>
+    </Box>
   );
 }

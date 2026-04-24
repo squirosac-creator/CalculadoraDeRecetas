@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
       sx={{ bgcolor: "transparent", backdropFilter: "blur(10px)" }}
     >
       <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Typography variant='h6' fontWeight={700}>
+        <Typography variant='h6' fontWeight={700} onClick={() => navigate("/")}>
           RecipeCalc
         </Typography>
 

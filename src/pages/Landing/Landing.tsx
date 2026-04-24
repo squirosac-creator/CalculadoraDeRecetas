@@ -1,25 +1,27 @@
-import { Container, Typography } from "@mui/material";
+/** @format */
 
-export default function Landing() {
+import { CssBaseline, Box } from "@mui/material";
+import Navbar from "../../components/NavigationBar/NavigationBar";
+import Hero from "../../components/Hero/Hero";
+import Features from "../../components/Features/Features";
+import Steps from "../../components/Steps/Steps";
+import CTA from "../../components/CTA/CTA";
+import Footer from "../../components/Footer/Footer";
+
+const Landing = () => {
   return (
-    <Container sx={{ mt: 6 }}>
-      <Typography variant="h3" gutterBottom>
-        Ajustador de Recetas
-      </Typography>
-
-      <Typography variant="body1" color="text.secondary" paragraph>
-        Esta aplicación permite escalar automáticamente las cantidades de los ingredientes de una receta según el número de invitados, manteniendo las
-        proporciones originales.
-      </Typography>
-
-      <Typography variant="h5" gutterBottom>
-        ¿Cómo funciona?
-      </Typography>
-
-      <Typography variant="body1" color="text.secondary">
-        El sistema aplica razones y proporciones matemáticas, utilizando la regla de tres simple y compuesta, para recalcular cada ingrediente de
-        forma precisa.
-      </Typography>
-    </Container>
+    <>
+      <CssBaseline />
+      <Navbar />
+      <Box>
+        <Hero />
+        <Features />
+        <Steps />
+        <CTA />
+        <Footer />
+      </Box>
+    </>
   );
-}
+};
+
+export default Landing;

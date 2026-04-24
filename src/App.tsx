@@ -1,22 +1,18 @@
-import { Box, Typography, Button, Stack } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+/** @format */
 
-export default function App() {
+import { HashRouter, Routes, Route } from "react-router-dom";
+import Landing from "./pages/Landing/Landing";
+import RecipeApp from "./pages/RecipeApp/RecipeApp";
+
+function App() {
   return (
-    <Box textAlign="center" mt={6}>
-      <Typography variant="h3" gutterBottom>
-        Ajustador de Recetas
-      </Typography>
-
-      <Typography variant="h6" color="text.secondary" gutterBottom>
-        Ajusta automáticamente las cantidades de una receta según el número de invitados, aplicando razones, proporciones y conversión de unidades.
-      </Typography>
-
-      <Stack direction="row" spacing={2} justifyContent="center" mt={4}>
-        <Button variant="contained" size="large" component={RouterLink} to="/app">
-          Usar aplicación
-        </Button>
-      </Stack>
-    </Box>
+    <HashRouter>
+      <Routes>
+        <Route path='/' element={<Landing />} />
+        <Route path='/app' element={<RecipeApp />} />
+      </Routes>
+    </HashRouter>
   );
 }
+
+export default App;

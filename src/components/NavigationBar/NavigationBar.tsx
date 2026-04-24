@@ -1,35 +1,28 @@
-import { AppBar, Toolbar, Typography, Button, Box, Container } from "@mui/material";
-import { BrowserRouter, Routes, Route, Link as RouterLink } from "react-router-dom";
+/** @format */
 
-import App from "../../App";
-import RecipeApp from "../../pages/RecipeApp/RecipeApp";
+import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-export default function Navbar() {
+const Navbar: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
-    <BrowserRouter>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Ajustador de Recetas
-          </Typography>
+    <AppBar
+      position='fixed'
+      elevation={0}
+      sx={{ bgcolor: "transparent", backdropFilter: "blur(10px)" }}
+    >
+      <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Typography variant='h6' fontWeight={700}>
+          RecipeCalc
+        </Typography>
 
-          <Box>
-            <Button color="inherit" component={RouterLink} to="/">
-              Inicio
-            </Button>
-            <Button color="inherit" component={RouterLink} to="/app">
-              Aplicación
-            </Button>
-          </Box>
-        </Toolbar>
-      </AppBar>
-
-      <Container sx={{ mt: 4 }}>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/app" element={<RecipeApp />} />
-        </Routes>
-      </Container>
-    </BrowserRouter>
+        <Button variant='contained' onClick={() => navigate("/app")}>
+          Empezar
+        </Button>
+      </Toolbar>
+    </AppBar>
   );
-}
+};
+
+export default Navbar;

@@ -67,9 +67,14 @@ export default function IngredientsForm({
               p: 2,
               mb: 2,
               display: "grid",
-              gridTemplateColumns: "2fr 1fr 1fr auto 1fr",
               gap: 2,
               alignItems: "center",
+
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "1fr 1fr",
+                md: "2fr 1fr 1fr auto 1fr",
+              },
             }}
           >
             <TextField

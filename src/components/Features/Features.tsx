@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const features: string[] = [
   "Escalado automático",
-  "Cálculo de costos",
+  "Cálculo de ingredientes",
   "Conversión de unidades",
   "Interfaz intuitiva",
 ];

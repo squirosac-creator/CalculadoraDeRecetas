@@ -19,7 +19,7 @@ const Features: React.FC = () => {
         </Typography>
 
         <Grid container spacing={4}>
-          {features.map((text, i) => (
+          {features.map((text) => (
             <Grid size={{ xs: 12, md: 3 }}>
               <motion.div whileHover={{ scale: 1.05 }}>
                 <Box

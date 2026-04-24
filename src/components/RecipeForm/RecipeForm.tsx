@@ -55,7 +55,7 @@ export default function RecipeForm({
 
       <Box display='grid' gridTemplateColumns={{ xs: "1fr", sm: "1fr 1fr" }} gap={2} mb={3}>
         <TextField
-          label='Invitados originales'
+          label='Cantidad de invitados previa'
           type='number'
           value={invitadosOriginales}
           error={errorInvitadosOriginales}
@@ -65,7 +65,7 @@ export default function RecipeForm({
         />
 
         <TextField
-          label='Invitados nuevos'
+          label='Nueva cantidad de invitados'
           type='number'
           value={invitadosNuevos}
           error={errorInvitadosNuevos}

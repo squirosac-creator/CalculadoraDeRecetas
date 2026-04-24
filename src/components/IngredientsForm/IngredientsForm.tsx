@@ -124,10 +124,6 @@ export default function IngredientsForm({
                   }))
                 }
               >
-                <MenuItem value=''>
-                  <em>Seleccionar</em>
-                </MenuItem>
-
                 {UNIDADES.map((u) => (
                   <MenuItem key={u} value={u}>
                     {LABEL_UNIDADES[u]}
@@ -162,10 +158,6 @@ export default function IngredientsForm({
                   }))
                 }
               >
-                <MenuItem value=''>
-                  <em>Seleccionar</em>
-                </MenuItem>
-
                 {UNIDADES.map((u) => (
                   <MenuItem key={u} value={u}>
                     {LABEL_UNIDADES[u]}

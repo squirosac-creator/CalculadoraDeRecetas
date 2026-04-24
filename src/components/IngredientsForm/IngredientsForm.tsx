@@ -14,14 +14,16 @@ import {
   FormControl,
   InputLabel,
   FormHelperText,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 
 type Props = {
   ingredientes: Ingrediente[];
-  onChange: (index: number, campo: keyof Ingrediente, valor: string | number) => void;
+  onChange: (index: number, campo: keyof Ingrediente, valor: string | number | boolean) => void;
   onAdd: () => void;
-  onValidationChange?: (hayErrores: boolean) => void; // 👈 clave
+  onValidationChange?: (hayErrores: boolean) => void;
 };
 
 export default function IngredientsForm({
@@ -37,12 +39,13 @@ export default function IngredientsForm({
   const esConversionValida = (ing: Ingrediente) =>
     conversionValida(ing.unidadEntrada, ing.unidadSalida);
 
-  const hayErrores = ingredientes.some(
-    (ing) =>
-      !ing.nombre.trim() ||
-      ing.cantidad <= 0 ||
-      (!ing.unidadEntrada || !ing.unidadSalida ? false : !esConversionValida(ing)),
-  );
+  const hayErrores = ingredientes.some((ing) => {
+    const errorNombre = !ing.nombre.trim();
+    const errorCantidad = ing.cantidad <= 0;
+    const errorConversion = ing.unidadEntrada && ing.unidadSalida && !esConversionValida(ing);
+
+    return errorNombre || errorCantidad || errorConversion;
+  });
 
   useEffect(() => {
     onValidationChange?.(hayErrores);
@@ -69,19 +72,39 @@ export default function IngredientsForm({
               display: "grid",
               gap: 2,
               alignItems: "center",
-
               gridTemplateColumns: {
                 xs: "1fr",
-                sm: "1fr 1fr",
-                md: "2fr 1fr 1fr auto 1fr",
+                sm: "auto 2fr 1fr 1fr auto 1fr",
               },
             }}
           >
+            <FormControlLabel
+              sx={{ alignSelf: "center", m: 0 }}
+              control={
+                <Checkbox
+                  size='small'
+                  checked={!!ing.convertir}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+
+                    onChange(index, "convertir", checked);
+
+                    if (!checked) {
+                      onChange(index, "unidadSalida", ing.unidadEntrada);
+                    }
+                  }}
+                />
+              }
+              label='Convertir'
+            />
+
             <TextField
+              size='small'
               label='Ingrediente'
+              fullWidth
               value={ing.nombre}
               error={!!(touched[index]?.nombre && errorNombre)}
-              helperText={touched[index]?.nombre && errorNombre ? "Requerido" : " "}
+              helperText={touched[index]?.nombre && errorNombre ? "Requerido" : ""}
               onChange={(e) => onChange(index, "nombre", e.target.value)}
               onBlur={() =>
                 setTouched((prev) => ({
@@ -92,11 +115,13 @@ export default function IngredientsForm({
             />
 
             <TextField
+              size='small'
               label='Cantidad'
               type='number'
+              fullWidth
               value={ing.cantidad}
               error={!!(touched[index]?.cantidad && errorCantidad)}
-              helperText={touched[index]?.cantidad && errorCantidad ? "Debe ser > 0" : " "}
+              helperText={touched[index]?.cantidad && errorCantidad ? "Debe ser > 0" : ""}
               inputProps={{ min: 0 }}
               onChange={(e) => onChange(index, "cantidad", Number(e.target.value))}
               onBlur={() =>
@@ -107,27 +132,21 @@ export default function IngredientsForm({
               }
             />
 
-            <FormControl>
+            {/* UNIDAD ENTRADA */}
+            <FormControl fullWidth size='small'>
               <InputLabel>Desde</InputLabel>
               <Select
                 label='Desde'
                 value={ing.unidadEntrada}
-                displayEmpty
                 onChange={(e) => {
                   const value = e.target.value;
 
                   onChange(index, "unidadEntrada", value);
 
-                  if (!ing.unidadSalida) {
+                  if (!ing.convertir) {
                     onChange(index, "unidadSalida", value);
                   }
                 }}
-                onBlur={() =>
-                  setTouched((prev) => ({
-                    ...prev,
-                    [index]: { ...prev[index], unidadEntrada: true },
-                  }))
-                }
               >
                 {UNIDADES.map((u) => (
                   <MenuItem key={u} value={u}>
@@ -135,31 +154,46 @@ export default function IngredientsForm({
                   </MenuItem>
                 ))}
               </Select>
-
-              <FormHelperText> </FormHelperText>
             </FormControl>
 
-            <Typography textAlign='center'>→</Typography>
+            {/* FLECHA */}
+            <Typography
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              →
+            </Typography>
 
-            <FormControl error={!!(touched[index]?.unidadSalida && errorConversion)}>
+            {/* UNIDAD SALIDA */}
+            <FormControl
+              fullWidth
+              size='small'
+              error={!!(touched[index]?.unidadSalida && errorConversion)}
+            >
               <InputLabel>A</InputLabel>
               <Select
                 label='A'
                 value={ing.unidadSalida}
-                displayEmpty
+                disabled={!ing.convertir}
                 onChange={(e) => {
                   const value = e.target.value;
 
                   onChange(index, "unidadSalida", value);
 
-                  if (!ing.unidadEntrada) {
+                  if (!ing.convertir) {
                     onChange(index, "unidadEntrada", value);
                   }
                 }}
                 onBlur={() =>
                   setTouched((prev) => ({
                     ...prev,
-                    [index]: { ...prev[index], unidadSalida: true },
+                    [index]: {
+                      ...prev[index],
+                      unidadSalida: true,
+                    },
                   }))
                 }
               >
@@ -171,7 +205,7 @@ export default function IngredientsForm({
               </Select>
 
               <FormHelperText>
-                {touched[index]?.unidadSalida && errorConversion ? "Conversión inválida" : " "}
+                {touched[index]?.unidadSalida && errorConversion ? "Conversión inválida" : ""}
               </FormHelperText>
             </FormControl>
           </Paper>

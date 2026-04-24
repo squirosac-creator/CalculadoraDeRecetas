@@ -1,8 +1,11 @@
+/** @format */
+
 export type Ingrediente = {
   nombre: string;
   cantidad: number;
   unidadEntrada: string;
   unidadSalida: string;
+  convertir?: boolean;
 };
 
 export type RecetaRequest = {

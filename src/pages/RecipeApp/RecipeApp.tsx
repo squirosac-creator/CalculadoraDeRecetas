@@ -15,7 +15,13 @@ export default function RecipeApp() {
   const [invitadosOriginales, setInvitadosOriginales] = useState(4);
   const [invitadosNuevos, setInvitadosNuevos] = useState(8);
   const [ingredientes, setIngredientes] = useState<Ingrediente[]>([
-    { nombre: "", cantidad: 0, unidadEntrada: "g", unidadSalida: "g" },
+    {
+      nombre: "",
+      cantidad: 0,
+      unidadEntrada: "g",
+      unidadSalida: "g",
+      convertir: false,
+    },
   ]);
   const [resultado, setResultado] = useState<IngredienteResultado[]>([]);
   const [error, setError] = useState("");
@@ -23,7 +29,13 @@ export default function RecipeApp() {
   const agregarIngrediente = () => {
     setIngredientes([
       ...ingredientes,
-      { nombre: "", cantidad: 0, unidadEntrada: "g", unidadSalida: "g" },
+      {
+        nombre: "",
+        cantidad: 0,
+        unidadEntrada: "g",
+        unidadSalida: "g",
+        convertir: false,
+      },
     ]);
   };
 
@@ -38,11 +50,11 @@ export default function RecipeApp() {
   const actualizarIngrediente = (
     index: number,
     campo: keyof Ingrediente,
-    valor: string | number,
+    valor: string | number | boolean,
   ) => {
-    const copia = [...ingredientes];
-    copia[index] = { ...copia[index], [campo]: valor };
-    setIngredientes(copia);
+    setIngredientes((prev) =>
+      prev.map((ing, i) => (i === index ? { ...ing, [campo]: valor } : ing)),
+    );
   };
 
   const validarFormulario = (): boolean => {

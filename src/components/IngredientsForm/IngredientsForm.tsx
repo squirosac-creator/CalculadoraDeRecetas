@@ -32,13 +32,16 @@ export default function IngredientsForm({
   onAdd,
   onValidationChange,
 }: Props) {
+  // Estado para marcar qué campos han sido tocados (para mostrar errores solo cuando corresponde)
   const [touched, setTouched] = useState<
     Record<number, Partial<Record<keyof Ingrediente, boolean>>>
   >({});
 
+  // Valida si una conversión entre unidades es válida según reglas externas
   const esConversionValida = (ing: Ingrediente) =>
     conversionValida(ing.unidadEntrada, ing.unidadSalida);
 
+  // Detecta si existe al menos un error en cualquier ingrediente
   const hayErrores = ingredientes.some((ing) => {
     const errorNombre = !ing.nombre.trim();
     const errorCantidad = ing.cantidad <= 0;
@@ -47,16 +50,19 @@ export default function IngredientsForm({
     return errorNombre || errorCantidad || errorConversion;
   });
 
+  // Notifica al componente padre si hay errores en el formulario
   useEffect(() => {
     onValidationChange?.(hayErrores);
   }, [hayErrores]);
 
   return (
     <Box>
+      {/* Título del formulario */}
       <Typography variant='h6' gutterBottom>
         Ingredientes
       </Typography>
 
+      {/* Render dinámico de cada ingrediente */}
       {ingredientes.map((ing, index) => {
         const errorNombre = !ing.nombre.trim();
         const errorCantidad = ing.cantidad <= 0;
@@ -78,6 +84,7 @@ export default function IngredientsForm({
               },
             }}
           >
+            {/* Checkbox para activar/desactivar conversión de unidades */}
             <FormControlLabel
               sx={{ alignSelf: "center", m: 0 }}
               control={
@@ -89,6 +96,7 @@ export default function IngredientsForm({
 
                     onChange(index, "convertir", checked);
 
+                    // Si se desactiva la conversión, igualamos unidad de salida a entrada
                     if (!checked) {
                       onChange(index, "unidadSalida", ing.unidadEntrada);
                     }
@@ -98,6 +106,7 @@ export default function IngredientsForm({
               label='Convertir'
             />
 
+            {/* Input: nombre del ingrediente */}
             <TextField
               size='small'
               label='Ingrediente'
@@ -114,6 +123,7 @@ export default function IngredientsForm({
               }
             />
 
+            {/* Input: cantidad del ingrediente */}
             <TextField
               size='small'
               label='Cantidad'
@@ -132,7 +142,7 @@ export default function IngredientsForm({
               }
             />
 
-            {/* UNIDAD ENTRADA */}
+            {/* Selector de unidad de entrada */}
             <FormControl fullWidth size='small'>
               <InputLabel>Desde</InputLabel>
               <Select
@@ -143,6 +153,7 @@ export default function IngredientsForm({
 
                   onChange(index, "unidadEntrada", value);
 
+                  // Si no hay conversión activa, sincroniza ambas unidades
                   if (!ing.convertir) {
                     onChange(index, "unidadSalida", value);
                   }
@@ -156,7 +167,7 @@ export default function IngredientsForm({
               </Select>
             </FormControl>
 
-            {/* FLECHA */}
+            {/* Indicador visual de dirección de conversión */}
             <Typography
               sx={{
                 display: "flex",
@@ -167,7 +178,7 @@ export default function IngredientsForm({
               →
             </Typography>
 
-            {/* UNIDAD SALIDA */}
+            {/* Selector de unidad de salida */}
             <FormControl
               fullWidth
               size='small'
@@ -183,6 +194,7 @@ export default function IngredientsForm({
 
                   onChange(index, "unidadSalida", value);
 
+                  // Si no hay conversión, sincroniza con entrada
                   if (!ing.convertir) {
                     onChange(index, "unidadEntrada", value);
                   }
@@ -204,6 +216,7 @@ export default function IngredientsForm({
                 ))}
               </Select>
 
+              {/* Mensaje de error de conversión */}
               <FormHelperText>
                 {touched[index]?.unidadSalida && errorConversion ? "Conversión inválida" : ""}
               </FormHelperText>
@@ -212,6 +225,7 @@ export default function IngredientsForm({
         );
       })}
 
+      {/* Botón para agregar nuevo ingrediente (bloqueado si hay errores) */}
       <Button variant='contained' onClick={onAdd} disabled={hayErrores}>
         ➕ Agregar ingrediente
       </Button>
